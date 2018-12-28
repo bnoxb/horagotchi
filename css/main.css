@@ -1,0 +1,38 @@
+#the-egg {
+    width: 200px;
+    height: auto;
+    text-align: center;
+    display: block;
+    position: absolute;
+    right: 175px;
+    top: 100px;
+    /* margin-left: auto;
+    margin-right: auto; */
+}
+#wrapper {
+    width:auto;
+    height: 300px;
+    background: grey;
+}
+#buttons-wrapper {
+    display: inline-block;
+    width: 300px;
+    height: auto;
+    margin-left: auto;
+}
+#the-egg-div {
+    width:auto;
+    height: 300px;
+    background: grey;
+}
+
+#marquis {
+    height: 50px;
+    width: auto;
+    background: burlywood;
+}
+
+#announcer {
+    display: inline-block;
+    width: 300px;
+}

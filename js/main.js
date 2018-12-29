@@ -6,11 +6,15 @@ const horatio = {
     sleepLvl:       0,
     boredomLvl:     0,
     isAlive:     true,
+    //some jquery variables for the gifs
+    $babyHoratio: $(`<img id="baby-horatio" src="https://media.giphy.com/media/xPGkOAdiIO3Is/giphy.gif">`),
+    $deadHoratio: $(`<img id="dead-horatio" src=#>`),
     // method for feeding
     feed() {
         if (this.isAlive && this.hungerLvl >= 5) {
             $(`#announcer`).text(`JUST FED HORATIO`);
             this.hungerLvl = this.hungerLvl - 5;
+            $(`#scoreBoard`).text(`Hunger:${horatio.hungerLvl} |Boredom:${horatio.boredomLvl} |Sleepiness:${horatio.sleepLvl}`);
         } else if(this.isAlive && this.hungerLvl <= 5){
             $(`#announcer`).text(`Horatio isn't hungry right now.`);
         } else {
@@ -22,6 +26,7 @@ const horatio = {
         if (this.isAlive && this.sleepLvl >= 5) {
             $(`#announcer`).text(`JUST PUT HORATIO TO SLEEP`);
             this.sleepLvl = this.sleepLvl - 5;
+            $(`#scoreBoard`).text(`Hunger:${horatio.hungerLvl} |Boredom:${horatio.boredomLvl} |Sleepiness:${horatio.sleepLvl}`);
         } else if (this.isAlive && this.sleepLvl <= 5) {
             $(`#announcer`).text(`Horatio isn't tired right now`);
         } else {
@@ -33,6 +38,7 @@ const horatio = {
         if (this.isAlive && this.boredomLvl >= 5) {
             $(`#announcer`).text(`JUST PLAYED WITH HORATIO`);
             this.boredomLvl = this.boredomLvl - 5;
+            $(`#scoreBoard`).text(`Hunger:${horatio.hungerLvl} |Boredom:${horatio.boredomLvl} |Sleepiness:${horatio.sleepLvl}`);
         } else if (this.isAlive && this.boredomLvl <= 5){
             $(`#announcer`).text(`Horatio doesn't want to play right now`);
         }
@@ -45,7 +51,7 @@ const horatio = {
 const game = () => {
     const hunger = setInterval(function (){
         horatio.hungerLvl ++;
-        console.log(`horatios hunger lvl: ${horatio.hungerLvl}`)
+        $(`#scoreBoard`).text(`Hunger:${horatio.hungerLvl} |Boredom:${horatio.boredomLvl} |Sleepiness:${horatio.sleepLvl}`);
         if (horatio.hungerLvl === 30 && horatio.isAlive) {
             $(`#announcer`).text(`HORATIO HAS FALLEN`);
             horatio.isAlive = false;
@@ -53,11 +59,11 @@ const game = () => {
         } else if (horatio.isAlive === false) {
             clearInterval(hunger);
         }
-    }, 1000);
+    }, 2000);
     const boredom = setInterval(function (){
         horatio.boredomLvl ++;
-        console.log(`horatios boredom lvl: ${horatio.boredomLvl}`)
-        if (horatio.boredomLvl === 600 && horatio.isAlive) {
+        $(`#scoreBoard`).text(`Hunger:${horatio.hungerLvl} |Boredom:${horatio.boredomLvl} |Sleepiness:${horatio.sleepLvl}`);
+        if (horatio.boredomLvl === 30 && horatio.isAlive) {
             $(`#announcer`).text(`HORATIO HAS FALLEN`);
             horatio.isAlive = false;
             clearInterval(boredom);
@@ -67,15 +73,16 @@ const game = () => {
     }, 1000);
     const sleepiness = setInterval(function (){
         horatio.sleepLvl ++;
-        console.log(`horatios sleepiness lvl: ${horatio.sleepLvl}`)
-        if (horatio.sleepLvl === 600 && horatio.isAlive) {
+        $(`#scoreBoard`).text(`Hunger:${horatio.hungerLvl} |Boredom:${horatio.boredomLvl} |Sleepiness:${horatio.sleepLvl}`);
+        if (horatio.sleepLvl === 45 && horatio.isAlive) {
             $(`#announcer`).text(`HORATIO HAS FALLEN`);
             horatio.isAlive = false;
+            $(`img#baby-horatio`).remove();
             clearInterval(sleepiness);
         } else if (horatio.isAlive === false) {
             clearInterval(sleepiness);
         }
-    }, 1000);
+    }, 3000);
     gameBoard();
     
 }
@@ -88,8 +95,11 @@ const gameBoard = () => {
     const $hungerButton = $(`<button id="hungerButton">Feed It!</button>`).appendTo(`#buttons-wrapper`);
     const $boredomButton = $(`<button id="boredomButton" class="button">Play with It!</button>`).appendTo(`#buttons-wrapper`);
     const $sleepButton = $(`<button id="sleepButton" class="button">Time for a nap!</button>`).appendTo(`#buttons-wrapper`);
+    //const $babyHoratio = $(`<img id="baby-horatio" src="https://media.giphy.com/media/xPGkOAdiIO3Is/giphy.gif">`)
     //removes the egg image
     $(`img#the-egg`).remove();
+    $(`#the-egg-div`).append(horatio.$babyHoratio);
+
 }
 
 

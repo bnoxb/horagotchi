@@ -38,5 +38,24 @@
 }
 
 #baby-horatio {
-    display: block;
+    display: inline-block;
+    width: 250px;
+    position: absolute;
+    right: 150px;
+}
+
+.button {
+    display:inline-block;
+    background: green;
+    border: solid 5px gold;
+    height: 100px;
+    width: 300px;
+    margin: 20px 0;
+}
+
+#food {
+    display: inline-block;
+    width: 100px;
+    position: absolute;
+    opacity: 0;
 }

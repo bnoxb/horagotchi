@@ -14,8 +14,9 @@ const horatio = {
     feed() {
         if (this.isAlive && this.hungerLvl >= 5) {
             $(`#announcer`).text(`JUST FED HORATIO`);
-            this.hungerLvl = this.hungerLvl - 5;
-            $(`#scoreBoard`).text(`Hunger:${horatio.hungerLvl} |Boredom:${horatio.boredomLvl} |Sleepiness:${horatio.sleepLvl}`);
+            giveFood();
+            // this.hungerLvl = this.hungerLvl - 5;
+            // $(`#scoreBoard`).text(`Hunger:${horatio.hungerLvl} |Boredom:${horatio.boredomLvl} |Sleepiness:${horatio.sleepLvl}`);
         } else if(this.isAlive && this.hungerLvl <= 5){
             $(`#announcer`).text(`Horatio isn't hungry right now.`);
         } else {
@@ -26,8 +27,7 @@ const horatio = {
     sleep() {
         if (this.isAlive && this.sleepLvl >= 5) {
             $(`#announcer`).text(`JUST PUT HORATIO TO SLEEP`);
-            this.sleepLvl = this.sleepLvl - 5;
-            $(`#scoreBoard`).text(`Hunger:${horatio.hungerLvl} |Boredom:${horatio.boredomLvl} |Sleepiness:${horatio.sleepLvl}`);
+            
         } else if (this.isAlive && this.sleepLvl <= 5) {
             $(`#announcer`).text(`Horatio isn't tired right now`);
         } else {
@@ -150,7 +150,8 @@ const foodInterval = (ranNum1, ranNum2) => {
     }, {
         duration: 5000,
         complete: function () {
-            
+            horatio.sleepLvl = horatio.sleepLvl - 5;
+            $(`#scoreBoard`).text(`Hunger:${horatio.hungerLvl} |Boredom:${horatio.boredomLvl} |Sleepiness:${horatio.sleepLvl}`);
             clearFood();
         }
         }
@@ -172,8 +173,8 @@ $(`#wrapper`).on('click', function(e) {
         //Check the type of button
         if ($($thisButton).attr(`id`) === 'hungerButton') {
            console.log(`You have clicked the hunger button`)
-           
-           giveFood(); 
+           horatio.feed();
+            
         }else if($($thisButton).attr(`id`) === `sleepButton`) {
             console.log(`You have clicked the sleep button`);
             horatio.sleep();

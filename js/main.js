@@ -147,7 +147,14 @@ const foodInterval = (ranNum1, ranNum2) => {
     $(`img#baby-horatio`).animate({
         top: ranNum1-=90,
         right: ranNum2-=50,
-    }, 5000);
+    }, {
+        duration: 5000,
+        complete: function () {
+            
+            clearFood();
+        }
+        }
+        );
 };
 const clearFood = () => {
     console.log(`clearing food`)
@@ -165,7 +172,7 @@ $(`#wrapper`).on('click', function(e) {
         //Check the type of button
         if ($($thisButton).attr(`id`) === 'hungerButton') {
            console.log(`You have clicked the hunger button`)
-           horatio.feed();
+           
            giveFood(); 
         }else if($($thisButton).attr(`id`) === `sleepButton`) {
             console.log(`You have clicked the sleep button`);

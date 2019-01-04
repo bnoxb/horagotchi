@@ -155,20 +155,21 @@ const gameBoard = () => {
     $(`<div id="hungerButton" class="button col-sm">Feed It</div>`).appendTo(`#buttons-wrapper`);
     $(`<div id="boredomButton" class="button col-sm">Play with It</div>`).appendTo(`#buttons-wrapper`);
     $(`<div id="sleepButton" class="button col-sm">Turn off the lights</div>`).appendTo(`#buttons-wrapper`);
-    $(` <div class="col-6"><span id="announcer"></span></div>`).appendTo(`#marquis`);
+    $(` <div class="col-6"><span id="announcer"></span></div>`).appendTo(`#game-board`);
     $(`<div class="col-sm"><div class="progress" style="height: 50px;"><div class="progress-bar progress-bar-green hunger-bar bars" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">Hunger Level</div></div></div>
         <div class="col-sm"><div class="progress" style="height: 50px;"><div class="progress-bar progress-bar-orange boredom-bar bars" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">Boredom</div></div></div>    
         <div class="col-sm"><div class="progress" style="height: 50px;"><div class="progress-bar progress-bar-purple sleep-bar bars" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">Tiredness</div></div></div>`
         ).appendTo(`#progress-bar-wrapper`);
-    //removes the egg image
-    $(`img#the-egg`).remove();
     // makes the baby horatio
     $(`#the-egg-div`).append(horatio.$babyHoratio);
     $(`#heading`).css({
-        background: '#EBF120',
+        background: 'rgba(1, 102, 10, .75)',
         color: 'black'
     });
-    $(`.smaller-heading`).css('background-color', `#EBF120`);
+    $(`.smaller-heading`).css({
+        background: `rgba(1, 102, 10, .75)`,
+        color: 'black'
+    });
     render();
     // initializes the pacing interval
     hoInt = horatioTimerStart();
@@ -187,8 +188,8 @@ const render = () => {
 // animation for horatio moving
 function paceHoratio() {
     // make him pace back and forth
-    const ranNumR = Math.round(Math.random() * 1000);
-    const ranNumT = Math.round(Math.random() * 150)+ 150;
+    const ranNumR = Math.round(Math.random() * 800);
+    const ranNumT = Math.round(Math.random() * 125)+ 275;
     $(`img#baby-horatio`).animate({
         right: ranNumR,
         top: ranNumT,
@@ -202,8 +203,8 @@ function horatioTimerStart() {
 
 const giveFood = () => {
     const $meal = $(`<img id="food" src=./images/food-symbol.png>`);
-    ranNumRight = Math.round(Math.random() * 600) + 200;
-    ranNumTop = Math.round(Math.random() * 100) + 250;
+    ranNumRight = Math.round(Math.random() * 400) + 250;
+    ranNumTop = Math.round(Math.random() * 100) + 390;
     // append the food and give it a random spot
     $(`#wrapper`).append($meal)
     flyInVelocity();
@@ -274,10 +275,19 @@ const death = () => {
     $(`img#baby-horatio`).stop();
 };
 
-const giveName = () => {
-    $(`#announcer`).text(``);
-    horatio = new Horatio(prompt(`Give your Horatio a name!`, `Horatio Prime`));
+const breakEgg = () => {
+    $(`img#the-egg`).attr(`src`, `images/egg-break.gif`);
+    setTimeout(removeEgg, 750);
+}
+const removeEgg = () => {
+    $(`img#the-egg`).velocity(`callout.pulse`);
+    $(`img#the-egg`).remove();
     startGame();
+}
+const giveName = () => {
+    horatio = new Horatio(prompt(`Give your Horatio a name!`, `Horatio Prime`));
+    $(`#announcer`).text(``);
+    breakEgg();
 };
 
 const evolve = () => {

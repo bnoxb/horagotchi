@@ -1,22 +1,25 @@
+
+
+body {
+    height: 100%;
+    opacity: .9;
+    background: url('../images/horatio-room.jpg') no-repeat center center fixed; 
+        -webkit-background-size: cover;
+        -moz-background-size: cover;
+        -o-background-size: cover;
+        background-size: cover;
+   
+}
+
 #the-egg {
-    width: 200px;
+    width: 250px;
     height: auto;
     display: block;
     position: absolute;
     right: 175px;
-    top: 100px;
-}
-#wrapper {
-    width:auto;
-    height: 300px;
-    background: url('../images/stars01.png');
-    background-repeat: repeat-x;    
+    top: 350px;
 }
 
-#marquis {
-    height: 50px;
-    text-align: center;
-}
 
 #announcer {
     
@@ -27,12 +30,14 @@
     width: 250px;
     position: absolute;
     right: 150px;
+    top: 350px;
 }
 
 .button {
-    background: #008a05;
-    border: solid 5px gold;
+    background: rgba(1, 102, 10, .5);
+    border: solid 5px rgba(209, 168, 0, .5);
     text-align: center;
+    color: #7cff80;
 }
 
 .button:hover {
@@ -51,7 +56,7 @@
 #heading {
     text-align: center;
     font-size: 40px;
-    color: white;
+    color: #01a809;
 }
 
 .smaller-heading {
@@ -67,10 +72,6 @@
     font-size: 20px;
 }
 
-.wrap-progress {
-    height: 100px;
-}
-
 .progress-bar-green {
     background-color: #5FAE01 !important;
 }
@@ -81,10 +82,4 @@
 
 .progress-bar-purple {
     background-color: #6C01AE !important;
-}
-#ground {
-    width: 473px;
-    height: 480px;
-    background: url('../images/ground-barren-moon.png');
-    background-repeat: repeat-x;
 }

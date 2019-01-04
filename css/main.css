@@ -1,40 +1,25 @@
 #the-egg {
     width: 200px;
     height: auto;
-    text-align: center;
     display: block;
     position: absolute;
     right: 175px;
     top: 100px;
-    /* margin-left: auto;
-    margin-right: auto; */
 }
 #wrapper {
     width:auto;
     height: 300px;
-    background: grey;
-}
-#buttons-wrapper {
-    display: inline-block;
-    width: 300px;
-    height: auto;
-    margin-left: auto;
-}
-#the-egg-div {
-    width:auto;
-    height: 300px;
-    background: grey;
+    background: url('../images/stars01.png');
+    background-repeat: repeat-x;    
 }
 
 #marquis {
     height: 50px;
-    width: auto;
-    background: burlywood;
+    text-align: center;
 }
 
 #announcer {
-    display: inline-block;
-    width: 300px;
+    
 }
 
 #baby-horatio {
@@ -45,12 +30,15 @@
 }
 
 .button {
-    display:inline-block;
-    background: green;
+    background: #008a05;
     border: solid 5px gold;
-    height: 100px;
-    width: 300px;
-    margin: 20px 0;
+    text-align: center;
+}
+
+.button:hover {
+    background: #012402;
+    color: #7cff80;
+    border: solid 5px rgb(110, 94, 0);
 }
 
 #food {
@@ -58,4 +46,45 @@
     width: 100px;
     position: absolute;
     opacity: 0;
+}
+
+#heading {
+    text-align: center;
+    font-size: 40px;
+    color: white;
+}
+
+.smaller-heading {
+    text-align: center;
+    font-size: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.bars {
+    width: 0;
+    font-size: 20px;
+}
+
+.wrap-progress {
+    height: 100px;
+}
+
+.progress-bar-green {
+    background-color: #5FAE01 !important;
+}
+
+.progress-bar-orange {
+    background-color: #AE7901 !important;
+}
+
+.progress-bar-purple {
+    background-color: #6C01AE !important;
+}
+#ground {
+    width: 473px;
+    height: 480px;
+    background: url('../images/ground-barren-moon.png');
+    background-repeat: repeat-x;
 }

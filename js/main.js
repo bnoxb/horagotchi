@@ -1,118 +1,194 @@
-
-const horatio = {
-    name:   `Horatio`,
-    hungerLvl:      0,
-    sleepLvl:       0,
-    boredomLvl:     0,
-    isAlive:     true,
-    age:            0,
-    //some jquery variables for the gifs
-    $babyHoratio: $(`<img id="baby-horatio" src="images/baby-horatio.gif">`),
-    
-    // method for feeding
+class Horatio {
+    constructor(name) {
+        this.name =         name;
+        this.hungerLvl =    0;
+        this.sleepLvl =     0;
+        this.boredomLvl =   0;
+        this.isAlive =      true;
+        this.age =          0;
+        this.$babyHoratio=  $(`<img id="baby-horatio" src="images/baby-horatio.gif">`);
+        this.form =         `Baby`;
+    }
     feed() {
         if (this.isAlive && this.hungerLvl >= 5) {
-            $(`#announcer`).text(`JUST FED ${horatio.name}`);
+            $(`#announcer`).text(`You just fed ${horatio.name}`);
             giveFood();
-            // this.hungerLvl = this.hungerLvl - 5;
-            // $(`#scoreBoard`).text(`Hunger:${horatio.hungerLvl} |Boredom:${horatio.boredomLvl} |Sleepiness:${horatio.sleepLvl}`);
         } else if(this.isAlive && this.hungerLvl <= 5){
             $(`#announcer`).text(`${horatio.name} isn't hungry right now.`);
         } else {
-            $(`#announcer`).text(`${horatio.name} IS DEAD YOU IDIOT`);
-            death();
+            $(`#announcer`).text(`${horatio.name} is food for the bugs!`);
         }
-    },
-    // method for making sleep 
+    }
     sleep() {
         if (this.isAlive && this.sleepLvl >= 5) {
             $(`#announcer`).text(`JUST PUT ${horatio.name} TO SLEEP`);
+            makeSleep();
             
         } else if (this.isAlive && this.sleepLvl <= 5) {
             $(`#announcer`).text(`${horatio.name} isn't tired right now`);
         } else {
-            $(`#announcer`).text(`${horatio.name} IS DEAD YOU IDIOT`);
+            $(`#announcer`).text(`${horatio.name} is dead you idiot!`);
         }
-    },
-    // method for play
+    }
     play() {
         if (this.isAlive && this.boredomLvl >= 5) {
-            $(`#announcer`).text(`JUST PLAYED WITH ${horatio.name}`);
-            this.boredomLvl = this.boredomLvl - 5;
-            $(`#scoreBoard`).text(`Hunger:${horatio.hungerLvl} |Boredom:${horatio.boredomLvl} |Sleepiness:${horatio.sleepLvl}`);
+            $(`#announcer`).text(`You just played with ${horatio.name}`);
+            this.boredomLvl = 0;
+            setTimeout(function () {
+                $(`#announcer`).text(``);
+            }, 3000);
         } else if (this.isAlive && this.boredomLvl <= 5){
             $(`#announcer`).text(`${horatio.name} doesn't want to play right now`);
         }
         else {
-            $(`#announcer`).text(`${horatio.name} IS DEAD YOU IDIOT`);
+            $(`#announcer`).text(`${horatio.name} is dead!`);
         }
     }
-};
-
-const game = () => {
-    const hunger = setInterval(function (){
-        horatio.hungerLvl ++;
-        horatio.age ++;
-        $(`#scoreBoard`).text(`Hunger:${horatio.hungerLvl} |Boredom:${horatio.boredomLvl} |Sleepiness:${horatio.sleepLvl} |Age: ${horatio.age}`);
-        if (horatio.hungerLvl === 600 && horatio.isAlive) {
-            $(`#announcer`).text(`${horatio.name} HAS FALLEN`);
-            horatio.isAlive = false;
-            clearInterval(hunger);
-            death();
-        } else if (horatio.isAlive === false) {
-            clearInterval(hunger);
-        }
-    }, 1000);
-    const boredom = setInterval(function (){
-        horatio.boredomLvl ++;
-        $(`#scoreBoard`).text(`Hunger:${horatio.hungerLvl} |Boredom:${horatio.boredomLvl} |Sleepiness:${horatio.sleepLvl} |Age: ${horatio.age}`);
-        if (horatio.boredomLvl === 600 && horatio.isAlive) {
-            $(`#announcer`).text(`${horatio.name} HAS FALLEN`);
-            horatio.isAlive = false;
-            clearInterval(boredom);
-            death();
-        } else if (horatio.isAlive === false) {
-            clearInterval(boredom);
-        }
-    }, 1000);
-    const sleepiness = setInterval(function (){
-        horatio.sleepLvl ++;
-        $(`#scoreBoard`).text(`Hunger:${horatio.hungerLvl} |Boredom:${horatio.boredomLvl} |Sleepiness:${horatio.sleepLvl} |Age: ${horatio.age}`);
-        if (horatio.sleepLvl === 600 && horatio.isAlive) {
-            $(`#announcer`).text(`${horatio.name} HAS FALLEN`);
-            horatio.isAlive = false;
-            clearInterval(sleepiness);
-            death();
-        } else if (horatio.isAlive === false) {
-            clearInterval(sleepiness);
-        }
-    }, 3000);
-    gameBoard();
-    
-};
-
-
-// variable to store the interval that makes horatio move
-
+}
+// variable to store intervals
 let hoInt;
+let slpInt;
+let hunInt;
+let borInt;
+let aInt;
+// variable to instantiate horatio
+let horatio;
+
+// Velocity Registration
+const flyInVelocity = () => {
+   $.Velocity.RegisterEffect(`transition.flyIn`, {
+    defaultDuration: 700,
+    calls:[
+      [{
+           right: ranNumRight,
+           top: ranNumTop,
+           opacity: 1,
+      }]  
+    ],  
+}); 
+} 
+$.Velocity.RegisterEffect(`transition.spinIn`, {
+    defaultDuration: 500,
+    calls:[
+        [ {rotateY: 180}, .15],
+        [ {rotateY: -180}, .25],
+        [ {rotateY: 90}, .4],
+        [ {rotateY: 0}, .2]
+    ],
+    reset: {rotateY: 0, rotateX: 0}
+});
+
+const startGame = () => {
+    hunInt = setInterval(hungerInt, 1500);
+    borInt = setInterval(boredomInt, 1000);
+    slpInt = setInterval(sleepinessInt, 2000);
+    aInt = setInterval(ageInt, 60000);
+    gameBoard();
+};
+
+const hungerInt = () => {
+        horatio.hungerLvl ++;
+        render();
+        if (horatio.hungerLvl >= 100 && horatio.isAlive) {
+            $(`#announcer`).text(`${horatio.name} HAS FALLEN`);
+            horatio.isAlive = false;
+            clearLifeIntervals();
+            death();
+        } else if (horatio.isAlive === false) {
+            clearLifeIntervals();
+        }
+};
+
+const boredomInt = () => {
+        horatio.boredomLvl ++;
+        render();
+        if (horatio.boredomLvl >= 100 && horatio.isAlive) {
+            $(`#announcer`).text(`${horatio.name} HAS FALLEN`);
+            horatio.isAlive = false;
+            clearLifeIntervals();
+            death();
+        } else if (horatio.isAlive === false) {
+            clearLifeIntervals();
+        }
+};
+
+const sleepinessInt = () => {
+        horatio.sleepLvl ++;
+        render();
+        if (horatio.sleepLvl >= 100 && horatio.isAlive) {
+            $(`#announcer`).text(`${horatio.name} HAS FALLEN`);
+            horatio.isAlive = false;
+            clearLifeIntervals();
+            death();
+        } else if (horatio.isAlive === false) {
+            clearLifeIntervals();
+        }
+};
+
+const ageInt = () => {
+        horatio.age++;
+        render();
+        if (horatio.age === 5 && horatio.isAlive) {
+            $(`#announcer`).text(`Horatio is about to evolve!!!`).velocity(`transition.swoopIn`, {
+                duration: 500,
+                complete: () => {
+                   evolve();
+                }
+            });
+            clearLifeIntervals(); 
+        }else if (horatio.isAlive === false) {
+            clearLifeIntervals();
+        }
+};
+
+const clearLifeIntervals = () => {
+    clearInterval(hunInt);
+    clearInterval(slpInt);
+    clearInterval(borInt);
+    clearInterval(aInt);
+    clearInterval(hoInt);
+    $(`img#baby-horatio`).stop(true);
+};
 // make the gameboard
 const gameBoard = () => {
-    //make a div for the buttons
-    const $buttonDiv = $(`<div id="buttons-wrapper"></div>`).appendTo(`#the-egg-div`);
     //make the buttons
-    const $hungerButton = $(`<button id="hungerButton" class="button">Feed It!</button><br>`).appendTo(`#buttons-wrapper`);
-    const $boredomButton = $(`<button id="boredomButton" class="button">Play with It!</button><br>`).appendTo(`#buttons-wrapper`);
-    const $sleepButton = $(`<button id="sleepButton" class="button">Time for a nap!</button><br>`).appendTo(`#buttons-wrapper`);
+    $(`<div id="hungerButton" class="button col-sm">Feed It</div>`).appendTo(`#buttons-wrapper`);
+    $(`<div id="boredomButton" class="button col-sm">Play with It</div>`).appendTo(`#buttons-wrapper`);
+    $(`<div id="sleepButton" class="button col-sm">Turn off the lights</div>`).appendTo(`#buttons-wrapper`);
+    $(` <div class="col-6"><span id="announcer"></span></div>`).appendTo(`#marquis`);
+    $(`<div class="col-sm"><div class="progress" style="height: 50px;"><div class="progress-bar progress-bar-green hunger-bar bars" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">Hunger Level</div></div></div>
+        <div class="col-sm"><div class="progress" style="height: 50px;"><div class="progress-bar progress-bar-orange boredom-bar bars" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">Boredom</div></div></div>    
+        <div class="col-sm"><div class="progress" style="height: 50px;"><div class="progress-bar progress-bar-purple sleep-bar bars" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">Tiredness</div></div></div>`
+        ).appendTo(`#progress-bar-wrapper`);
     //removes the egg image
     $(`img#the-egg`).remove();
+    // makes the baby horatio
     $(`#the-egg-div`).append(horatio.$babyHoratio);
+    $(`#heading`).css({
+        background: '#EBF120',
+        color: 'black'
+    });
+    $(`.smaller-heading`).css('background-color', `#EBF120`);
+    render();
+    // initializes the pacing interval
     hoInt = horatioTimerStart();
-}
+};
+
+//render function
+const render = () => {
+    // update the headings
+    $(`#current-form`).text(`Current Form: ${horatio.form}`);
+    $(`#heading`).text(horatio.name);
+    $(`#age`).text(`Age: ${horatio.age}`);
+    $(`div.hunger-bar`).css(`width`, horatio.hungerLvl+ "%").attr(`aria-valuenow`, horatio.hungerLvl);
+    $(`div.boredom-bar`).css(`width`, horatio.boredomLvl+ "%").attr(`aria-valuenow`, horatio.boredomLvl);
+    $(`div.sleep-bar`).css(`width`, horatio.sleepLvl+ "%").attr(`aria-valuenow`, horatio.sleepLvl);
+};
 // animation for horatio moving
 function paceHoratio() {
     // make him pace back and forth
-    const ranNumR = Math.round(Math.random() * 1250);
-    const ranNumT = Math.round(Math.random() * 200)+ 100;
+    const ranNumR = Math.round(Math.random() * 1000);
+    const ranNumT = Math.round(Math.random() * 150)+ 150;
     $(`img#baby-horatio`).animate({
         right: ranNumR,
         top: ranNumT,
@@ -127,14 +203,11 @@ function horatioTimerStart() {
 const giveFood = () => {
     const $meal = $(`<img id="food" src=./images/food-symbol.png>`);
     ranNumRight = Math.round(Math.random() * 600) + 200;
-    ranNumTop = Math.round(Math.random() * 200) + 50;
+    ranNumTop = Math.round(Math.random() * 100) + 250;
     // append the food and give it a random spot
     $(`#wrapper`).append($meal)
-    $(`img#food`).animate({
-            "right": ranNumRight,
-            "top": ranNumTop,
-            "opacity": 1
-    }, 0);
+    flyInVelocity();
+    $(`img#food`).velocity('transition.flyIn').velocity(`transition.spinIn`);
     clearInterval(hoInt);
     foodInterval(ranNumTop, ranNumRight);
 };
@@ -147,18 +220,40 @@ const foodInterval = (ranNum1, ranNum2) => {
     }, {
         duration: 5000,
         complete: function () {
-            horatio.hungerLvl = horatio.hungerLvl - 5;
-            $(`#scoreBoard`).text(`Hunger:${horatio.hungerLvl} |Boredom:${horatio.boredomLvl} |Sleepiness:${horatio.sleepLvl} |Age: ${horatio.age}`);
+            horatio.hungerLvl = 0;
+            $(`#announcer`).text(``);
+            render();
             clearFood();
+            }
         }
-        }
-        );
+    );
 };
 
 const clearFood = () => {
     console.log(`clearing food`)
-    $(`img#food`).detach();
-    resetPace();
+    $(`img#food`).velocity(`transition.slideUpOut`, {
+        duration: 300,
+        complete: function () {
+        $(`img#food`).detach();
+        console.log(`resetting pace...`);
+        resetPace();    
+        }
+    });
+    
+};
+
+const makeSleep = () => {
+    clearInterval(hoInt);
+    $(`img#baby-horatio`).stop();
+    $(`img#baby-horatio`).attr(`src`, `./images/horatio-baby-sleep.gif`);
+    setTimeout(function (){
+        $(`img#baby-horatio`).attr(`src`, `./images/baby-horatio.gif`);
+        horatio.sleepLvl = 0;
+        $(`#announcer`).text(``);
+        render();
+        console.log(`resetting pace...`);
+        resetPace();
+    }, 5000);
 };
 
 const resetPace = () => {
@@ -169,20 +264,37 @@ const resetPace = () => {
 };
 
 const death = () => {
-    $(`img#baby-horatio`).attr(`src`, `images/horatio-baby-dead01.png`);
-    console.log(`killing horatio`);
+    $(`img#baby-horatio`).velocity(`callout.pulse`, {
+        duration: 500,
+        complete: function () {
+            $(this).attr(`src`, `images/horatio-baby-dead01.png`);
+        }
+    })
     clearInterval(hoInt);
     $(`img#baby-horatio`).stop();
-}
+};
 
 const giveName = () => {
     $(`#announcer`).text(``);
-    horatio.name = prompt(`Give your Horatio a name!`, `Horatio`);
-    game();
-}
+    horatio = new Horatio(prompt(`Give your Horatio a name!`, `Horatio Prime`));
+    startGame();
+};
+
+const evolve = () => {
+    $(`img#baby-horatio`).attr({
+       src: './images/horatio-old-01.png'
+    }
+    ).velocity({
+        width: 600
+    },
+    {
+        duration: 1000,
+        delay: 20
+    }) 
+};
 
 $(`#wrapper`).on('click', function(e) {
-    if (e.target.tagName === 'BUTTON'){
+    if (e.target.tagName === 'DIV'){
         const $thisButton = $(e.target)[0];
         //Check the type of button
         if ($($thisButton).attr(`id`) === 'hungerButton') {
@@ -194,4 +306,5 @@ $(`#wrapper`).on('click', function(e) {
         }   
     }
 });
+
 $(`img#the-egg`).on('click', giveName);

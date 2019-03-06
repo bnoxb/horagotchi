@@ -82,7 +82,7 @@ const startGame = () => {
     hunInt = setInterval(hungerInt, 1500);
     borInt = setInterval(boredomInt, 1000);
     slpInt = setInterval(sleepinessInt, 2000);
-    aInt = setInterval(ageInt, 60000);
+    aInt = setInterval(ageInt, 30000);
     gameBoard();
 };
 
